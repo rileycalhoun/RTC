@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Socket.IO chat</title>
+        <link rel="stylesheet" type="text/css" href="/client.css">
+    </head>
+    <header>
+        <h1 id="title">Socket.IO Chat</h1>
+        <h3 id="status">Connecting...</h3>
+    </header>
+    <body>
+        <div>
+            <ul id="messages"></ul>
+        </div>
+        <form id="form" action="">
+            <input id="input" autocomplete="off" /><button>Send</button>
+        </form>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/client.js"></script>
+    </body>
+</html>
