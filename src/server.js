@@ -1,7 +1,10 @@
+// Get schema, url and port
+const { schema, url, port } = require('../configs/config.json');
+
 // Define the express app
 const express = require('express');
 const app = express();
-app.use(express.static(__dirname + '/public', {
+app.use(express.static(__dirname, {
     index: false,
     immutable: false,
     cacheControl: true,
@@ -16,58 +19,77 @@ const webServer = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(webServer);
 
-// Send the index.html file to the client
+// Serve the index.html file to the client
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
 // Define a user list and a socket map
 userProperties = {};
-openConnections = {};
 
 io.on('connection', (socket) => {
 
-    // Generate a new UUID for the user and add them to the list
-    // Add the id to the id list and the socket to the socket map
+    // Generate a new UUID for the user 
     let id = Date.now().toString().slice(-10);
-    openConnections[id] = socket;
     userProperties[id] = {
+        id: id,
         username: undefined
     }
 
     // Log the connection, send the id and users list to the client
-    console.log('User with id ' + id + ' connected');
-    // Emit updates to clients
-    socket.emit('updateId', id);
+    console.info('User with id ' + id + ' connected');
+
+    // Update the user list
     io.emit('updateUsers', userProperties);
+
+    // Update the user's id on their end
+    socket.emit('updateUser', userProperties[id]);
 
     // Detect when a user disconnects
     socket.on('disconnect', () => {
-      console.log('User with id ' + id + ' disconnected');
-      delete openConnections[id];
-      
       // Remove from the usernames map and the userlist
       delete userProperties[id];
+
+      // Update the user list
       io.emit('updateUsers', userProperties);
+
+      // Log the disconnection
+      console.info('User with id ' + id + ' disconnected');
     });
 
     // Detect when a chat message is sent
     socket.on('chat', (msg) => {
+        // Define the display name as the username if it exists, otherwise use the id
         const displayName = userProperties[id].username || id;
+
+        // Log the message to the server console
         console.log(displayName + ': ' + msg);
+
+        // Emit the message to all clients
         io.emit('chat', msg, displayName);
     });
 
     // Detect when a username update is sent
     socket.on('updateUsername', (newUsername) => {
-        console.log(id + ' changed their username to ' + newUsername);
+        console.info(id + ' changed their username to ' + newUsername);
         
         // Set the username in the userProperties map
         userProperties[id].username = newUsername;
+
+        // Emit the updated user list
         io.emit('updateUsers', userProperties);
+
+        // Update the username on the client's end
+        socket.emit('updateUser', userProperties[id]);
     });
 });
 
-webServer.listen(3000, () => {
-  console.log('listening on *:3000');
+webServer.listen(port, () => {
+  if(!url.includes(':')) {
+      url = url + ':' + port;
+  }
+
+
+  console.info(`Listening on port ${port}`);
+  console.log(`Access on ${schema}://${url}`);
 });
