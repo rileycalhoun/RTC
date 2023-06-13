@@ -21,29 +21,50 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-socketMap = {};
+// Define a user list and a socket map
+userProperties = {};
+openConnections = {};
+
 io.on('connection', (socket) => {
 
-    // Generate a new UUID
+    // Generate a new UUID for the user and add them to the list
+    // Add the id to the id list and the socket to the socket map
     let id = Date.now().toString().slice(-10);
-    socketMap[id] = socket;
+    openConnections[id] = socket;
+    userProperties[id] = {
+        username: undefined
+    }
 
-    // Insert generated ID into socket list, log the connection
-    // and then send the ID to the client
-    socketMap[id] = socket;
+    // Log the connection, send the id and users list to the client
     console.log('User with id ' + id + ' connected');
+    // Emit updates to clients
     socket.emit('updateId', id);
+    io.emit('updateUsers', userProperties);
 
     // Detect when a user disconnects
     socket.on('disconnect', () => {
       console.log('User with id ' + id + ' disconnected');
-      delete socketMap[id];
+      delete openConnections[id];
+      
+      // Remove from the usernames map and the userlist
+      delete userProperties[id];
+      io.emit('updateUsers', userProperties);
     });
 
     // Detect when a chat message is sent
     socket.on('chat', (msg) => {
-        console.log(id + ': ' + msg);
-        io.emit('chat', msg, id);
+        const displayName = userProperties[id].username || id;
+        console.log(displayName + ': ' + msg);
+        io.emit('chat', msg, displayName);
+    });
+
+    // Detect when a username update is sent
+    socket.on('updateUsername', (newUsername) => {
+        console.log(id + ' changed their username to ' + newUsername);
+        
+        // Set the username in the userProperties map
+        userProperties[id].username = newUsername;
+        io.emit('updateUsers', userProperties);
     });
 });
 

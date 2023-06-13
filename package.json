@@ -1,7 +1,7 @@
 {
-  "name": "rt-chat",
+  "name": "rtc",
   "version": "1.0.0",
-  "description": "",
+  "description": " A simple real-time chat application utilizing Socket.IO.",
   "main": "src/index.js",
   "scripts": {
     "chat": "node src/server.js"
