@@ -9,14 +9,22 @@
         <h3 id="status">Connecting...</h3>
     </header>
     <body>
+        <div id="sidebar">
+            <form id="usernameForm">
+                <input id="usernameInput" autocomplete="off" />
+                <button>Set Name</button>
+            </form>
+            <ul id="users"></ul>
+        </div>
         <div>
             <ul id="messages"></ul>
         </div>
-        <form id="form" action="">
-            <input id="input" autocomplete="off" /><button>Send</button>
+        <form id="messageForm" action="">
+            <input id="messageInput" autocomplete="off" />
+            <button>Send</button>
         </form>
 
         <script src="/socket.io/socket.io.js"></script>
-        <script src="/client.js"></script>
+        <script src="../client.js"></script>
     </body>
 </html>
