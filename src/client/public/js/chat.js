@@ -3,7 +3,7 @@ var userProperties = {};
 var id = undefined;
 var username = undefined;
 
-var socket = io();
+var socket = io("http://localhost:3000");
 
 var connectionStatus = document.getElementById('status');
 

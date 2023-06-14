@@ -17,7 +17,11 @@ const webServer = http.createServer(app);
 
 // Define the socket server
 const { Server } = require("socket.io");
-const io = new Server(webServer);
+const io = new Server(webServer, {
+    cors: {
+        origin: '*',
+    }
+});
 
 // Send index.html
 app.get('/', (req, res) => {
