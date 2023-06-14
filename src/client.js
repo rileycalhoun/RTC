@@ -1,4 +1,5 @@
 var userProperties = {};
+var userData = {};
 
 var id = undefined;
 var username = undefined;
@@ -52,15 +53,14 @@ usernameForm.addEventListener('submit', function(e) {
 // Detect when the server updates the client's id
 socket.on('updateUser', function(data) {
     // Update the client's id
-    id = data.id;
-    username = data.username;
+    userData = data;
 
     // Update the connection status
-    let displayName = username || id;
+    let displayName = userData.username || userData.id;
     connectionStatus.textContent = 'Connected as ' + displayName;
 
     // Log the connection
-    console.info('Connected as ' + id);
+    console.info('Connected as ' + displayName);
 });
 
 

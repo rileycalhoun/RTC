@@ -1,3 +1,8 @@
+:root {
+    --primary-color: #1a202c;
+    --secondary-color: #38a169;
+}
+
 body { 
     margin: 0; 
     padding-bottom: 3rem; 
@@ -7,12 +12,12 @@ body {
 header { 
     margin: 0;
     padding: .5rem .5rem;
-    background: #555;
+    background: var(--primary-color);
     color: #fff;
 }
 
-header h1 { margin: 0; font-size: 1.25rem; }
-h3 { margin: 0; font-size: .75rem; }
+header h1 { margin: 0; font-size: 1.5rem; line-height: 2rem; }
+h3 { margin: 0; font-size: 1rem; line-height: 1.5rem; }
 
 #sidebar {
     width: 17%;
@@ -21,7 +26,7 @@ h3 { margin: 0; font-size: .75rem; }
     top: 0;
     right: 0;
     height: 100vh;  
-    background-color: #555;
+    background-color: var(--primary-color);
     overflow-x: hidden;
     padding-top: 20px;
 }
@@ -39,7 +44,7 @@ h3 { margin: 0; font-size: .75rem; }
     width: 100%;
     height: calc(100% - 60px);  
     overflow: auto;
-    border:rgba(0, 0, 0, 0.15);
+   border: rgba(0, 0, 0, 0.15);
 }
 
 #sidebar form input {
@@ -49,13 +54,23 @@ h3 { margin: 0; font-size: .75rem; }
     border: none;
 }
 
+#sidebar form input:hover, 
+#sidebar form input:focus {
+    background-color: var(--secondary-color);
+}
+
 #sidebar form button {
     margin: 5px;
     padding: 5px;
     border-radius: 5px;
     border: none;
-    background-color: #333;
+    background-color: var(--secondary-color);
     color: #fff;
+}
+
+#sidebar form button:hover, 
+#sidebar form button:focus {
+    background-color: var(--secondary-color);
 }
 
 #sidebar ul li {
@@ -64,6 +79,11 @@ h3 { margin: 0; font-size: .75rem; }
     font-size: 1.25rem;
     color: #fff;
     display: block;
+}
+
+#sidebar ul li:hover {
+    background: var(--secondary-color);
+    cursor: pointer;
 }
 
 #messageForm { 
@@ -85,18 +105,21 @@ h3 { margin: 0; font-size: .75rem; }
     flex-grow: 1; 
     border-radius: 2rem; 
     margin: 0.25rem; 
+    border: 1px solid var(--primary-color);
 }
 
-#messageInput:focus { outline: none; }
+#messageInput:focus { 
+    outline: none; 
+}
 
 #messageForm > button { 
     width: 4rem; /* adjust as needed */
     height: 2.1rem; /* reduced height */
-    background: #333; 
+    background: var(--secondary-color); 
     border: none; 
     padding: 0 1rem; /* adjust padding */
     margin: 0.25rem; 
-    border-radius: 50px; /* this will make the button oval-shaped */
+    border-radius: 2rem; 
     outline: none; 
     color: #fff; 
     display: flex;  /* to center the text, you might need to adjust according to your content */
