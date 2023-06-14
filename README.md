@@ -3,3 +3,6 @@
 Implemented features:
 - Unique IDs
 - Usernames
+
+"Planned" features:
+- Login

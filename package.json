@@ -1,10 +1,11 @@
 {
   "name": "rtc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": " A simple real-time chat application utilizing Socket.IO.",
   "main": "src/index.js",
   "scripts": {
-    "chat": "node src/server.js"
+    "server": "node src/server/server.js",
+    "client": "node src/client/client.js"
   },
   "keywords": [],
   "author": "Riley Calhoun",

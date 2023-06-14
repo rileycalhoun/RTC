@@ -1,10 +1,10 @@
 // Get schema, url and port
-const { schema, url, port } = require('../configs/config.json');
+const { schema, url, address, port } = require('../../configs/config.json').server;
 
 // Define the express app
 const express = require('express');
 const app = express();
-app.use(express.static(__dirname, {
+app.use(express.static(__dirname + "/public", {
     index: false,
     immutable: false,
     cacheControl: true,
@@ -19,9 +19,9 @@ const webServer = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(webServer);
 
-// Serve the index.html file to the client
+// Send index.html
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/public/index.html');
 });
 
 // Define a user list and a socket map
@@ -84,12 +84,7 @@ io.on('connection', (socket) => {
     });
 });
 
-webServer.listen(port, () => {
-  if(!url.includes(':')) {
-      url = url + ':' + port;
-  }
-
-
-  console.info(`Listening on port ${port}`);
+webServer.listen(port, address, () => {
+  console.info(`Listening on ${address}:${port}`);
   console.log(`Access on ${schema}://${url}`);
 });
